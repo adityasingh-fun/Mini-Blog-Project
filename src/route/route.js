@@ -9,10 +9,10 @@ router.get('/test-me' , (req,res)=>{
     res.send("working");
 });
 
-router.post('/authors',);
-router.post('/blogs',);
-router.get('/blogs',);
-router.put('/blogs/:blogId',);
-router.delete('/blogs/:blogId',);
+router.post('/authors',);//aditya
+router.post('/blogs',);//Aditya
+router.get('/blogs',);//pallavi
+router.put('/blogs/:blogId',);//preeti
+router.delete('/blogs/:blogId',);//swarnendu
 
 module.exports = router;

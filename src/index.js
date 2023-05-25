@@ -8,11 +8,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// mongoose.connect("", {
-//     useNewUrlParser: true
-// })
-// .then( () => console.log("MongoDb is connected"))
-// .catch ( err => console.log(err) )
+mongoose.connect('mongodb+srv://chaudharyaditya41:Z67gI1uJnrGCnHuY@cluster0.jgngtnq.mongodb.net/Blogging-Project?retryWrites=true&w=majority', {
+    useNewUrlParser: true
+})
+.then( () => console.log("MongoDb is connected"))
+.catch ( err => console.log(err) )
 
 app.use('/', route);
 
