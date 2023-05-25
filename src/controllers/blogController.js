@@ -36,20 +36,13 @@ const updatedBlog = async function (req, res) {
 
     try {
         const blogId = req.params.blogId;
-        const updateData = req.body;
-
-        // Check if the blogId exists and is not deleted
-
-        const existingBlog = await blogModel.findOne({ _id: blogId });
-        if (!existingBlog) {
-            return res.status(404).send({ error: "Blog not found" });
-        }
+        const { title, body, tags, subcategory } = req.body;
 
 
         // Update the blog fields
         const updateBlog = await blogModel.findOneAndUpdate(
             { _id: blogId },
-            { title: updateData.title, body: updateData.body, tags: updateData.tags, subcategory: updateData.subcategory, isPublished: true, publishedAt: new Date() },
+            { title:title, body: body, tags:tags, subcategory:subcategory, isPublished: true, publishedAt:Date.now() },
             { new: true }
         );
 
@@ -68,20 +61,23 @@ const updatedBlog = async function (req, res) {
 const deleteBlogByPathParam = async (req, res) => {
     try {
         let bId = req.params.blogId;
+        if(!bId){
+            return res.status(400).send("path param must be present in url")
+        }
         let blogData = await blogModel.findOne({ _id: bId, isDeleted: false });
         if (!blogData) {
             return res.status(404).send({ status: false, msg: "Document not found" })
         }
-        let deletedBlog = await blogModel.findOneAndUpdate({ _id: bId }, { isDeleted: true });
+        let deletedBlog = await blogModel.findOneAndUpdate(
+          { _id: bId },
+          { isDeleted: true, deletedAt: Date.now() }
+        );
         res.status(200).send("Deleted");
     }
     catch (err) {
         res.status(500).send({ status: false, Error: err.message });
     }
 }
-
-// Delete blog documents by category, authorid, tag name, subcategory name, unpublished
-// If the blog document doesn't exist then return an HTTP status of 404 with a body like
 
 const deleteBlogByQueryParam = async (req, res) => {
     try {
@@ -90,7 +86,11 @@ const deleteBlogByQueryParam = async (req, res) => {
             return res.status(404).send({ status: false, msg: "Blog not Found" });
 
         }
-        let deletedBlog = await blogModel.updateMany(filterData, { isDeleted: true }, { new: true });
+        let deletedBlog = await blogModel.updateMany(
+          filterData,
+          { isDeleted: true, deletedAt: Date.now() },
+          { new: true }
+        );
         res.status(200).send("Deleted")
     }
     catch (err) {
@@ -98,4 +98,4 @@ const deleteBlogByQueryParam = async (req, res) => {
     }
 }
 
-module.exports = { createBlog, getBlogData, deleteBlogByPathParam, deleteBlogByQueryParam,updatedBlog }
+module.exports = { createBlog, getBlogData,updatedBlog, deleteBlogByPathParam, deleteBlogByQueryParam }

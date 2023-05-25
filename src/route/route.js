@@ -11,10 +11,10 @@ router.get('/test-me' , (req,res)=>{
     res.send("working");
 });
 
-router.post('/authors',middleware.reqBodyCheck,middleware.valiEmail,authorCtrl.createAuthor);//aditya
+router.post('/authors',middleware.reqBodyCheck,middleware.validEmail,middleware.uniqueEmail,authorCtrl.createAuthor);//aditya
 router.post('/blogs',middleware.reqBodyCheck, middleware.validAuthor, blogCtrl.createBlog);//Aditya
  router.get('/blogs',blogCtrl.getBlogData);//pallavi
-router.put('/blogs/:blogId',blogCtrl.updatedBlog);//preeti
+router.put("/blogs/:blogId", middleware.validBlogId, blogCtrl.updatedBlog);//preeti
 router.delete('/blogs/:blogId',middleware.validBlogId,blogCtrl.deleteBlogByPathParam);//swarnendu
 router.delete('/blogs',blogCtrl.deleteBlogByQueryParam)
 
