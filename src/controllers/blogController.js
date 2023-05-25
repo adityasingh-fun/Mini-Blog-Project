@@ -61,9 +61,6 @@ const updatedBlog = async function (req, res) {
 const deleteBlogByPathParam = async (req, res) => {
     try {
         let bId = req.params.blogId;
-        if(!bId){
-            return res.status(400).send("path param must be present in url")
-        }
         let blogData = await blogModel.findOne({ _id: bId, isDeleted: false });
         if (!blogData) {
             return res.status(404).send({ status: false, msg: "Document not found" })
