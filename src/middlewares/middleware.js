@@ -25,7 +25,7 @@ const uniqueEmail=async function(req,res,next){
      const uEmail = req.body.email;
      let checkEmail = await authorModel.findOne({ email: uEmail });
      if (checkEmail) {
-       res.status(401).send({status:false,msg:"emailId already exist"});
+      return res.status(401).send({status:false,msg:"emailId already exist"});
      }
      next();
    } catch (error) {
@@ -37,8 +37,10 @@ const uniqueEmail=async function(req,res,next){
 const reqBodyCheck = async function (req, res, next) {
     try {
         let data = req.body;
-        if (!data) {
-            return res.status(400).send({ status: false, msg: "Request body is not present" })
+        if (Object.keys(data).length === 0) {
+          return res
+            .status(400)
+            .send({ status: false, msg: "Request body is not present" });
         }
         next()
     }

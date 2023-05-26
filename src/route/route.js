@@ -1,7 +1,8 @@
 const express = require('express');
 const authorCtrl=require('../controllers/authorController');
 const blogCtrl=require('../controllers/blogController');
-const middleware = require('../middlewares/middleware')
+const mid = require('../middlewares/middleware')
+const authmid=require('../middlewares/authmid')
 
 const router = express.Router();
 
@@ -11,11 +12,13 @@ router.get('/test-me' , (req,res)=>{
     res.send("working");
 });
 
-router.post('/authors',middleware.reqBodyCheck,middleware.validEmail,middleware.uniqueEmail,authorCtrl.createAuthor);//aditya
-router.post('/blogs',middleware.reqBodyCheck, middleware.validAuthor, blogCtrl.createBlog);//Aditya
+router.post('/authors',mid.reqBodyCheck,mid.validEmail,mid.uniqueEmail,authorCtrl.createAuthor);//aditya
+router.post('/blogs',mid.reqBodyCheck, mid.validAuthor, blogCtrl.createBlog);//Aditya
  router.get('/blogs',blogCtrl.getBlogData);//pallavi
-router.put("/blogs/:blogId", middleware.validBlogId, blogCtrl.updatedBlog);//preeti
-router.delete('/blogs/:blogId',middleware.validBlogId,blogCtrl.deleteBlogByPathParam);//swarnendu
-router.delete('/blogs',blogCtrl.deleteBlogByQueryParam)
+router.put("/blogs/:blogId",mid.reqBodyCheck, mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid, blogCtrl.updatedBlog);//preeti
+router.delete('/blogs/:blogId',mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid,blogCtrl.deleteBlogByPathParam);//swarnendu
+router.delete("/blogs", authmid.authenticationMid, blogCtrl.deleteBlogByQueryParam);
+router.post("/login", mid.reqBodyCheck,authorCtrl.loginAuthor);
+
 
 module.exports = router;
