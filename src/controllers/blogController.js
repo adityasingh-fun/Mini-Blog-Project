@@ -22,13 +22,16 @@ const createBlog = async function (req, res) {
 }
 
 const getBlogData = async (req, res) => {
-
-    let query = req.query;
-
-    query.isDeleted = false;
-    query.isPublished = true;
-    
     try {
+        let query = req.query;
+        let authId = req.decodedToken.authorId;
+        if (query["authorId"] != authId && query["authorId"])
+            return res.status(404).send({ status: false, msg: "Blog not Found" });
+         
+        query.isDeleted = false;
+        query.isPublished = true;
+    
+    
         let doc = await blogModel.find(query);
         if (doc.length == 0) {
             return res.status(404).send({ status: false, msg: "Document not found" })
@@ -99,6 +102,7 @@ const deleteBlogByQueryParam = async (req, res) => {
         let authId = req.decodedToken.authorId;
         if (filterData["authorId"] != authId && filterData["authorId"])
           return res.status(404).send({ status: false, msg: "Blog not Found" });
+
         filterData["authorId"] = authId;
         let existData = await blogModel.findOne(filterData);
         if (!existData) {
