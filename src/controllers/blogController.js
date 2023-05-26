@@ -1,3 +1,4 @@
+const { findOneAndDelete, findOneAndUpdate } = require('../models/author');
 const blog = require('../models/blog');
 const blogModel = require('../models/blog');
 const moment=require('moment');
@@ -53,16 +54,19 @@ const updatedBlog = async function (req, res) {
 
         // Update the blog fields
         const updateBlog = await blogModel.findOneAndUpdate(
-            { _id: blogId },
+            { _id: blogId ,isDeleted:false},
             { title:title, body: body,$push:{tags:tags,subcategory:subcategory}, isPublished: true, publishedAt:`${moment()}` },
             { new: true }
         );
-        
+        if(!updateBlog)
+        {
+            return res.status(404).send({status:false,msg:"No such data present"});
+        }
         let tagSet = new Set([...updateBlog.tags]);
         let subSet = new Set([...updateBlog.subcategory]);
         updateBlog.tags = Array.from(tagSet);
         updateBlog.subcategory = Array.from(subSet);
-
+        let pushData=await blogModel.findOneAndUpdate({_id:blogId},updateBlog);
         // Return the updated blog document in the response
         res.status(200).send({
             status: true,
