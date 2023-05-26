@@ -4,7 +4,15 @@ const moment=require('moment');
 
 const createBlog = async function (req, res) {
     try {
-        const data = req.body;
+        const data=req.body
+        const authdata = req.body.authorId;
+          let authId = req.decodedToken.authorId;
+          if (authdata!=authId) {
+            return res
+              .status(404)
+              .send({ status: false, msg: "not a valid author to create a blog" });
+            //   if isDeleted true in database or we are passing different attributes in query params
+          }
         const blog = await blogModel.create(data);
         res.status(201).send({ status: true, data: blog })
     }
@@ -89,7 +97,9 @@ const deleteBlogByQueryParam = async (req, res) => {
     try {
         let filterData = req.query;
         let authId = req.decodedToken.authorId;
-        filterData["authorId"]=authId;
+        if (filterData["authorId"] != authId && filterData["authorId"])
+          return res.status(404).send({ status: false, msg: "Blog not Found" });
+        filterData["authorId"] = authId;
         let existData = await blogModel.findOne(filterData);
         if (!existData) {
           return res.status(404).send({ status: false, msg: "Blog not Found" });

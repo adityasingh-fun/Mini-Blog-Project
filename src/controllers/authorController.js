@@ -27,7 +27,7 @@ const loginAuthor = async function (req, res) {
       status: false,
       msg: "Email is Correct but Password is not correct",
     });
-  let token = jwt.sign({ authorId: author._id }, "blogging-group-10");
+  let token = jwt.sign({ authorId: emailAuthor._id }, "blogging-group-10");
   res.setHeader("x-api-key", token);
   res.send({ status: true, data: { token: token } });
 };

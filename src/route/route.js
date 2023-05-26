@@ -13,8 +13,8 @@ router.get('/test-me' , (req,res)=>{
 });
 
 router.post('/authors',mid.reqBodyCheck,mid.validEmail,mid.uniqueEmail,authorCtrl.createAuthor);//aditya
-router.post('/blogs',mid.reqBodyCheck, mid.validAuthor, blogCtrl.createBlog);//Aditya
- router.get('/blogs',blogCtrl.getBlogData);//pallavi
+router.post('/blogs',mid.reqBodyCheck, mid.validAuthor,authmid.authenticationMid, blogCtrl.createBlog);//Aditya
+ router.get('/blogs' ,mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid,blogCtrl.getBlogData);//pallavi
 router.put("/blogs/:blogId",mid.reqBodyCheck, mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid, blogCtrl.updatedBlog);//preeti
 router.delete('/blogs/:blogId',mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid,blogCtrl.deleteBlogByPathParam);//swarnendu
 router.delete("/blogs", authmid.authenticationMid, blogCtrl.deleteBlogByQueryParam);

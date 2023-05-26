@@ -26,6 +26,7 @@ try{
   let author=authId.authorId;
    let tokenAuth = req.decodedToken.authorId;
 
+
   if(tokenAuth!=author){
     return res.status(403).send({
       status: false,
@@ -35,6 +36,7 @@ try{
   next();
 }
 catch(error){
+    // console.log(error)
   return res.status(500).send({ status: false, msg: error.message });
 }
 };
