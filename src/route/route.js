@@ -18,7 +18,7 @@ router.get('/blogs' ,authmid.authenticationMid,blogCtrl.getBlogData);//pallavi
 router.put("/blogs/:blogId",mid.reqBodyCheck, mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid, blogCtrl.updatedBlog);//preeti 
 router.delete('/blogs/:blogId',mid.validBlogId,authmid.authenticationMid,authmid.authorizationMid,blogCtrl.deleteBlogByPathParam);//swarnendu 
 router.delete("/blogs", authmid.authenticationMid, blogCtrl.deleteBlogByQueryParam);//swarnendu
-router.post("/login", mid.reqBodyCheck,authorCtrl.loginAuthor);
+router.post("/login", mid.reqBodyCheck,mid.validEmail,authorCtrl.loginAuthor);
  
  
 module.exports = router; 

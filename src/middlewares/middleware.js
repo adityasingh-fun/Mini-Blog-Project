@@ -10,7 +10,7 @@ const validEmail = async function (req, res, next) {
           /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
         const found = email.match(pattern);
         if (!found) {
-            return res.status(400).send({ status: false, msg: "Inavlid Email" })
+            return res.status(400).send({ status: false, msg: "You give wrong Email format" })
         }
         next()
     }
