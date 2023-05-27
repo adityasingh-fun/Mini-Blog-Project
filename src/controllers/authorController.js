@@ -11,11 +11,11 @@ const createAuthor = async (req, res)=>{
     const {fname,lname,title,email,password}= req.body;
     let check=checkName(fname)
     if(!check){
-      return res.status(400).send({status:false,msg:"first name should contains only letter"})
+      return res.status(400).send({status:false,msg:"first name can only contain letters"})
     }
      check = checkName(lname);
     if (!check) {
-      return res.status(400).send({status:false,msg:"last name should contains only letter"});
+      return res.status(400).send({status:false,msg:"last name can only contain letters"});
     }
   
     const data={fname:fname,lname:lname,title:title,email:email,password:password}
