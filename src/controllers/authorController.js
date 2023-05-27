@@ -38,7 +38,7 @@ const loginAuthor = async (req, res) =>{
     return res.status(400).send({status:false,msg:"password is required"});
   }
 
-  let emailAuthor = await authorModel.findOne({ email: email });
+  let emailAuthor = await authorModel.findOne({ email: email ,password:password});
   if (!emailAuthor)
     return res
       .status(404)
