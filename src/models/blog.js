@@ -12,7 +12,8 @@ const blogSchema = new mongoose.Schema({
     }, 
     authorId: {
         type: ObjectId,
-        ref: 'authorData'
+        ref: 'authorData',
+        required:true
     }, 
     tags: {
         type: [String]
@@ -25,14 +26,16 @@ const blogSchema = new mongoose.Schema({
         type: [String]
     }, 
     deletedAt: {
-        type: Date
+        type: Date,
+        default:null
     }, 
     isDeleted: {
         type: Boolean, 
         default: false
     }, 
     publishedAt: {
-        type: Date
+        type:Date,
+        default:null
     }, 
     isPublished: {
         type: Boolean, 
