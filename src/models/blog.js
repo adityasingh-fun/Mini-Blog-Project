@@ -12,7 +12,8 @@ const blogSchema = new mongoose.Schema({
     }, 
     authorId: {
         type: ObjectId,
-        ref: 'authorData'
+        ref: 'authorData',
+        required:true
     }, 
     tags: {
         type: [String]

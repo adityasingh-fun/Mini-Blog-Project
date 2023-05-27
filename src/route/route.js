@@ -7,10 +7,6 @@ const authmid=require('../middlewares/authmid')
 const router = express.Router();
 
 
-router.get('/test-me' , (req,res)=>{
-    console.log("workinggg")
-    res.send("working");
-});
 
 router.post('/authors',mid.reqBodyCheck,mid.validEmail,mid.uniqueEmail,authorCtrl.createAuthor);//aditya 
 router.post('/blogs',mid.reqBodyCheck, mid.validAuthor,authmid.authenticationMid, blogCtrl.createBlog);//Aditya 

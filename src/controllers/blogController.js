@@ -89,12 +89,12 @@ const deleteBlogByQueryParam = async (req, res) => {
         let filterData = req.query;
         let authId = req.decodedToken.authorId;
         if (filterData["authorId"] != authId && filterData["authorId"])
-          return res.status(404).send({ status: false, msg: "Blog not Found" });
+          return res.status(404).send({ status: false, msg: "Filter AuthorID is not matched with login Author" });
 
         filterData["authorId"] = authId;
         let existData = await blogModel.findOne(filterData);
         if (!existData) {
-          return res.status(404).send({ status: false, msg: "Blog not Found" });
+          return res.status(404).send({ status: false, msg: "Blog not Found of login Author" });
         //   if isDeleted true in database or we are passing different attributes in query params
         }
         if (existData.isDeleted) 
