@@ -38,13 +38,13 @@ const loginAuthor = async (req, res) =>{
     return res.status(400).send({status:false,msg:"password is required"});
   }
 
-  let emailAuthor = await authorModel.findOne({ email: email ,password:password});
+  let emailAuthor = await authorModel.findOne({ email: email});
   if (!emailAuthor)
     return res
       .status(404)
       .send({ status: false, msg: "Email is not registered" });
 
-  let passAuthor = await authorModel.findOne({ password: password });
+  let passAuthor = await authorModel.findOne({ email: email,password: password });
   if (!passAuthor)
     return res
       .status(404)
