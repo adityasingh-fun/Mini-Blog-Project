@@ -11,6 +11,10 @@ const customerSchema = new mongoose.Schema({
     status:{
         type: String,
         enum: ["ACTIVE","INACTIVE"]
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 },{timestamps:true});
 

@@ -16,7 +16,7 @@ const cardSchema = new mongoose.Schema({
     vision:String,
     customerID:{
         type: ObjectId,
-        ref: Customer
+        ref: 'Customer'
     }
 },{timestamps:true});
 

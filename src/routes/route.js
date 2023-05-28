@@ -3,12 +3,32 @@ const router = express.Router();
 const userController= require("../controllers/userController")
 const MW = require('../middleware/auth.js')
 const customerController= require("../controllers/customerController")
+const cardController = require('../controllers/cardController')
 
 router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
 
-router.post('/createCustomer',customerController.createCustomer)
+router.post('/createCustomer',customerController.createCustomer);
+
+router.post('/createCard',cardController.createCard)
+
+router.get('/getActiveCustomers',customerController.getActiveCustomers)
+
+router.delete('/deleteCustomer/:customerID',customerController.deleteCustomer)
+
+router.get('/getAllCards',cardController.getAllCards)
+
+
+
+
+
+
+
+
+
+
+
 
 router.post("/users", userController.createUser)
 
