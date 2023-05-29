@@ -21,19 +21,19 @@ const validEmail = async function (req, res, next) {
     
 }
 
-const uniqueEmail=async function(req,res,next){
-   try {
-     const uEmail = req.body.email;
-     let checkEmail = await authorModel.findOne({ email: uEmail });
-     if (checkEmail) {
-      return res.status(401).send({status:false,msg:"emailId already exist"});
-     }
-     next();
-   } catch (error) {
-     return res.status(500).send({ status: false, msg: error.message });
-   }
+  const uniqueEmail=async function(req,res,next){
+    try {
+      const uEmail = req.body.email;
+      let checkEmail = await authorModel.findOne({ email: uEmail });
+      if (checkEmail) {
+        return res.status(401).send({status:false,msg:"emailId already exist"});
+      }
+      next();
+    } catch (error) {
+      return res.status(500).send({ status: false, msg: error.message });
+    }
 
-}
+  }
 
 const reqBodyCheck = async function (req, res, next) {
     try {
@@ -50,10 +50,10 @@ const reqBodyCheck = async function (req, res, next) {
     }
 }
 
-
 const validAuthor = async function (req, res, next) {
     try {
         let authId = req.body.authorId;
+        if(authId){
         if(authId.length!==24){
             return res.status(400).send({status:false,msg:"provide valid author ID"})
         };
@@ -61,12 +61,19 @@ const validAuthor = async function (req, res, next) {
         if (!validAuthor) {
             return res.status(404).send({ staus: false, msg: "Author does not exist" })
         }
-        next()
+        next();
+      }else{
+        const data = req.body;
+        let authId = req.decodedToken.authorId;
+        data["authorId"]=authId;
+        const blog = await blogModel.create(data);
+      return  res.status(201).send({ status: true, data: blog });
+      }
     }
     catch (error) {
         return res.status(500).send({ status: false, msg: error.message })
     }
-}
+  }
 
 const validBlogId = async function (req, res, next) {
     try {
@@ -91,9 +98,49 @@ const validBlogId = async function (req, res, next) {
     catch (error) {
         return res.status(500).send({ status: false, msg: error.message })
     }
+};
+
+const validPassword = (req, res, next) => {
+  try {
+    let password = req.body.password;
+    for (let i = 0; i < password.length; i++) {
+      if (password[i] == " ")
+        return res
+          .status(400)
+          .send({
+            status: false,
+            msg: "provide valid password (password does not contain SPACE)",
+          });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ status: false, msg: error.message });
+  }
+};
+
+const missingFieldAuthor= async (req, res,next) => {
+  try{const { fname, lname, title, email, password } = req.body;
+    // handling mandatory field name is present in req.body
+    if (!fname || !lname || !title || !email || !password) {
+      return res.status(400).send({ status: false, msg: "Missing Required Field" });
+    }
+  next();}
+    catch(err){
+      return res.status(500).send({ status: false, msg: err.message });
+    }
 }
-
-
+const missingFieldBlog= async (req, res,next) => {
+  try{const { title, body, category } = req.body;
+    // handling mandatory field name is present in req.body
+    if (!title || !body || !category) {
+      return res.status(400).send({ status: false, msg: "Missing Required Field" });
+    }
+  next();
+}
+    catch(err){
+      return res.status(500).send({ status: false, msg: err.message });
+    }
+}
 
 
 
@@ -102,5 +149,6 @@ module.exports = {
   validAuthor,
   validBlogId,
   validEmail,
-  uniqueEmail
+  uniqueEmail,
+  validPassword,missingFieldAuthor,missingFieldBlog
 };
