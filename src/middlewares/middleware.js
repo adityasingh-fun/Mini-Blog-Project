@@ -51,29 +51,29 @@ const reqBodyCheck = async function (req, res, next) {
 }
 
 const validAuthor = async function (req, res, next) {
-    try {
-        let authId = req.body.authorId;
-        if(authId){
-        if(authId.length!==24){
-            return res.status(400).send({status:false,msg:"provide valid author ID"})
-        };
-        let validAuthor = await authorModel.findById({ _id: authId });
-        if (!validAuthor) {
-            return res.status(404).send({ staus: false, msg: "Author does not exist" })
-        }
-        next();
-      }else{
-        const data = req.body;
-        let authId = req.decodedToken.authorId;
-        data["authorId"]=authId;
-        const blog = await blogModel.create(data);
-      return  res.status(201).send({ status: true, data: blog });
+  try {
+      let authId = req.body.authorId;
+      if(authId){
+      if(authId.length!=24){
+          return res.status(400).send({status:false,msg:"provide valid author ID"})
+      };
+      let validAuthor = await authorModel.findById({ _id: authId });
+      if (!validAuthor) {
+          return res.status(404).send({ staus: false, msg: "Author does not exist" })
       }
-    }
-    catch (error) {
-        return res.status(500).send({ status: false, msg: error.message })
+      next();
+    }else{
+      const data = req.body;
+      let authId = req.decodedToken.authorId;
+      data["authorId"]=authId;
+      const blog = await blogModel.create(data);
+    return  res.status(201).send({ status: true, data: blog });
     }
   }
+  catch (error) {
+      return res.status(500).send({ status: false, msg: error.message })
+  }
+}
 
 const validBlogId = async function (req, res, next) {
     try {
@@ -117,7 +117,6 @@ const validPassword = (req, res, next) => {
     return res.status(500).send({ status: false, msg: error.message });
   }
 };
-
 const missingFieldAuthor= async (req, res,next) => {
   try{const { fname, lname, title, email, password } = req.body;
     // handling mandatory field name is present in req.body
@@ -141,6 +140,8 @@ const missingFieldBlog= async (req, res,next) => {
       return res.status(500).send({ status: false, msg: err.message });
     }
 }
+
+
 
 
 

@@ -17,7 +17,9 @@ const createAuthor = async (req, res)=>{
     if (!check) {
       return res.status(400).send({status:false,msg:"last name should contains only letter"});
     }
-  
+    if (!["Mr", "Mrs", "Miss"].includes(title)) {
+      return res.status(400).send({ status: false, msg: "Invalid title" });
+    }
     const data={fname:fname,lname:lname,title:title,email:email,password:password}
     const author = await authorModel.create(data);
     res.status(201).send({ status: true, data: author });
