@@ -131,7 +131,7 @@ const deleteBlogByQueryParam = async (req, res) => {
     if (filterData.authorId != authId && filterData["authorId"])
       return res.status(404).send({status: false,msg: "Filter AuthorID is not matched with login Author"});
 
-    // filterData["authorId"] = authId;
+    filterData["authorId"] = authId;
     let existData = await blogModel.findOne(filterData);
 
     if (!existData) {
